@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ medicine.name }}{% endblock %}
+
+{% block content %}
+<h2>{{ medicine.name }}</h2>
+<p>{{ medicine.description }}</p>
+<p>Дата добавления: {{ medicine.created_at|date:"d.m.Y H:i" }}</p>
+
+<!-- Панель действий -->
+<div class="action-panel">
+    {% if user.is_authenticated %}
+        <a href="{% url 'medicine_edit' medicine.pk %}" class="btn"> Редактировать</a>
+        <a href="{% url 'medicine_delete' medicine.pk %}" class="btn"> Удалить</a>
+    {% endif %}
+    <a href="{% url 'medicine_list' %}" class="btn"> Назад</a>
+</div>
+
+<hr>
+
+<!-- Комментарии -->
+<h3>Комментарии</h3>
+{% if comments %}
+    {% for comment in comments %}
+        <div class="comment">
+            <strong>{{ comment.user.username }}</strong> — {{ comment.created_at|date:"d.m.Y H:i" }}<br>
+            {{ comment.text }}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Комментариев пока нет.</p>
+{% endif %}
+
+<hr>
+
+<!-- Добавление комментария -->
+{% if user.is_authenticated %}
+    <h4>Добавить комментарий</h4>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="text" placeholder="Напишите ваш комментарий..."></textarea>
+        <button type="submit" class="btn"> Отправить</button>
+    </form>
+{% else %}
+    <p>Чтобы оставить комментарий, <a href="{% url 'login' %}">войдите</a> на сайт.</p>
+{% endif %}
+{% endblock %}
+

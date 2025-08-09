@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Список лекарств{% endblock %}
+
+{% block content %}
+<h1>Список лекарств</h1>
+
+{% if user.is_authenticated %}
+<div class="add-button-container-left">
+    <a href="{% url 'medicine_add' %}" class="btn btn-mustard"> Добавить лекарство</a>
+</div>
+{% endif %}
+
+<hr>
+
+{% for medicine in medicines %}
+<div class="medicine-card">
+    <h3>{{ medicine.name }}</h3>
+    <p>{{ medicine.description|truncatechars:120 }}</p>
+    <a href="{% url 'medicine_detail' medicine.pk %}" class="btn">Подробнее</a>
+</div>
+{% empty %}
+<p>Нет добавленных лекарств.</p>
+{% endfor %}
+{% endblock %}

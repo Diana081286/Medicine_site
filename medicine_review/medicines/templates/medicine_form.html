@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить лекарство{% endblock %}
+
+{% block content %}
+<h2>{% if medicine %}Редактировать{% else %}Добавить{% endif %} лекарство</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Сохранить</button>
+</form>
+{% endblock %}
